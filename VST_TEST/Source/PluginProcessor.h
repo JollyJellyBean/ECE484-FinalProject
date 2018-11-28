@@ -31,7 +31,7 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
-    void allPassFilter(std::vector<float> ArrayIn,std::vector<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize);
+    void allPassFilter(AudioBuffer<float> ArrayIn,AudioBuffer<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize, int channel);
     
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 

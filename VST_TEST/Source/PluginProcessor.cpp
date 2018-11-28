@@ -130,14 +130,18 @@ bool Vst_testAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 #endif
 
 
-void Vst_testAudioProcessor::allPassFilter(std::vector<float> ArrayIn,std::vector<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize){
+void Vst_testAudioProcessor::allPassFilter(AudioBuffer<float> ArrayIn,AudioBuffer<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize, int channel){
     
     for(int sample=0;sample<arrayInSize;sample++){
-        ArrayOut.push_back(-feedbackCoefficient*ArrayIn.at(sample));
+        
+        ArrayOut.setSample(channel,sample,-feedbackCoefficient*ArrayIn.getSample(channel, sample));
+        
         if((sample-Delay)>=0){
-            ArrayOut.at(sample)= ArrayOut.at(sample)+ ArrayIn.at(sample-Delay);
-            ArrayOut.at(sample)= ArrayOut.at(sample)+ feedbackCoefficient*ArrayOut.at(sample-Delay);
+            ArrayOut.setSample(channel,sample, ArrayOut.getSample(channel,sample) + ArrayIn.getSample(channel, sample-Delay));
+            ArrayOut.setSample(channel,sample, ArrayOut.getSample(channel,sample) + feedbackCoefficient*ArrayOut.getSample(channel,sample-Delay));
         }
+        ArrayOut.setSample(channel,sample,ArrayOut.getSample(channel,sample)*0.5);
+        
     }
 }
 
@@ -163,14 +167,22 @@ void Vst_testAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    AudioBuffer<float> allpassOut;
+    allpassOut.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        
+        allPassFilter(buffer,allpassOut, combFeedbackCoefficient1,combFilterDelay1,buffer.getNumSamples(),channel);
+    
+    auto* channelData = allpassOut.getWritePointer (channel);
 
-        for(int sample=0; sample < buffer.getNumSamples();sample++){
-            channelData[sample]= buffer.getSample(channel, sample)*combFeedbackCoefficient1;
-        }
     }
+    
+    buffer=allpassOut;
+    
+    
 }
 
 //==============================================================================
