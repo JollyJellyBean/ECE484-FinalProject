@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <vector>
 
 //==============================================================================
 /**
@@ -30,7 +31,10 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
+    void allPassFilter(std::vector<float> ArrayIn,std::vector<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize);
+    
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
+
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;

@@ -129,6 +129,19 @@ bool Vst_testAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 }
 #endif
 
+
+void Vst_testAudioProcessor::allPassFilter(std::vector<float> ArrayIn,std::vector<float> &ArrayOut,int Delay, float feedbackCoefficient,int arrayInSize){
+    
+    for(int sample=0;sample<arrayInSize;sample++){
+        ArrayOut.push_back(-feedbackCoefficient*ArrayIn.at(sample));
+        if((sample-Delay)>=0){
+            ArrayOut.at(sample)= ArrayOut.at(sample)+ ArrayIn.at(sample-Delay);
+            ArrayOut.at(sample)= ArrayOut.at(sample)+ feedbackCoefficient*ArrayOut.at(sample-Delay);
+        }
+    }
+}
+
+
 void Vst_testAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
