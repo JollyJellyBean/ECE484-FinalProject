@@ -140,9 +140,31 @@ void Vst_testAudioProcessor::allPassFilter(AudioBuffer<float> ArrayIn,AudioBuffe
             ArrayOut.setSample(channel,sample, ArrayOut.getSample(channel,sample) + ArrayIn.getSample(channel, sample-Delay));
             ArrayOut.setSample(channel,sample, ArrayOut.getSample(channel,sample) + feedbackCoefficient*ArrayOut.getSample(channel,sample-Delay));
         }
-        ArrayOut.setSample(channel,sample,ArrayOut.getSample(channel,sample)*0.5);
+        ArrayOut.setSample(channel,sample,ArrayOut.getSample(channel,sample));
         
     }
+}
+
+//====================== Comb Filter ===========================================
+void Vst_testAudioProcessor::combFilter(AudioBuffer<float> ArrayIn, AudioBuffer<float> &ArrayOut, int Delay, float feedbackCoefficient, int arrayInSize, int channel)
+{
+	for (int sample = 0; sample < arrayInSize; sample++) {
+
+		if ((sample - Delay) >= 0) {
+			ArrayOut.setSample(channel, sample, ArrayOut.getSample(channel, sample) + ArrayIn.getSample(channel, sample - Delay));
+			ArrayOut.setSample(channel, sample, ArrayOut.getSample(channel, sample) + feedbackCoefficient * ArrayOut.getSample(channel, sample - Delay));
+		}
+		ArrayOut.setSample(channel, sample, ArrayOut.getSample(channel, sample));
+
+	}
+}
+
+//====================== Add Comb Filter Outputs ===============================
+void Vst_testAudioProcessor::addCombFilterOutputs(AudioBuffer<float> combOutput1, AudioBuffer<float> combOutput2, AudioBuffer<float> &output, int arrayInSize, int channel)
+{
+	for (int sample = 0; sample < arrayInSize; sample++) {
+		output.setSample(channel, sample, combOutput1.getSample(channel, sample) + combOutput2.getSample(channel, sample));
+	}
 }
 
 
@@ -167,20 +189,39 @@ void Vst_testAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    AudioBuffer<float> allpassOut;
-    allpassOut.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+    AudioBuffer<float> OutputMASTER;
+	AudioBuffer<float> OutputMASTER2;
+	AudioBuffer<float> Output1;
+	AudioBuffer<float> Output2;
+	AudioBuffer<float> Output3;
+	AudioBuffer<float> Output4;
+
+	OutputMASTER.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+	OutputMASTER2.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+	Output1.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+	Output2.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+	Output3.setSize(buffer.getNumChannels(), buffer.getNumSamples());
+	Output4.setSize(buffer.getNumChannels(), buffer.getNumSamples());
 
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         
-        allPassFilter(buffer,allpassOut, combFeedbackCoefficient1,combFilterDelay1,buffer.getNumSamples(),channel);
-    
-    auto* channelData = allpassOut.getWritePointer (channel);
+		//combFilter(buffer, OutputMASTER, combFilterDelay1, combFeedbackCoefficient1, buffer.getNumSamples(), channel);
+		//combFilter(buffer, Output2, combFilterDelay2, combFeedbackCoefficient2, buffer.getNumSamples(), channel);
+		//combFilter(buffer, Output3, combFilterDelay3, combFeedbackCoefficient3, buffer.getNumSamples(), channel);
+		//combFilter(buffer, Output4, combFilterDelay4, combFeedbackCoefficient4, buffer.getNumSamples(), channel);
+
+		//addCombFilterOutputs(Output1, Output2, Output3, Output4, OutputMASTER, buffer.getNumSamples(), channel);
+
+        //allPassFilter(OutputMASTER, OutputMASTER2, combFeedbackCoefficient1,combFilterDelay1,buffer.getNumSamples(),channel);
+		allPassFilter(buffer, OutputMASTER, combFeedbackCoefficient1, combFilterDelay1, buffer.getNumSamples(), channel);
+
+    auto* channelData = OutputMASTER.getWritePointer (channel);
 
     }
     
-    buffer=allpassOut;
+    buffer= OutputMASTER;
     
     
 }

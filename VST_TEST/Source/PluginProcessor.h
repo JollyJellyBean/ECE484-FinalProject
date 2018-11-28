@@ -35,6 +35,9 @@ public:
     
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
+	void combFilter(AudioBuffer<float> ArrayIn, AudioBuffer<float> &ArrayOut, int Delay, float feedbackCoefficient, int arrayInSize, int channel);
+
+	void addCombFilterOutputs(AudioBuffer<float> combOutput1, AudioBuffer<float> combOutput2, AudioBuffer<float> combOutput3, AudioBuffer<float> combOutput4, AudioBuffer<float> &output, int arrayInSize, int channel);
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
