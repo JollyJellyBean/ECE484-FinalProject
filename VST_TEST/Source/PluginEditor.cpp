@@ -24,7 +24,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial11.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial11.setTextValueSuffix(" Coefficient");
     dial11.setRange(0,0.99,0.01);
-    dial11.setValue(0.99);
+    dial11.setValue(0.0);
     dial11.addListener(this);
     
     addAndMakeVisible(dial12);
@@ -32,7 +32,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial12.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial12.setTextValueSuffix(" Coefficient");
     dial12.setRange(0,0.99,0.01);
-    dial12.setValue(0.75);
+    dial12.setValue(0.0);
     dial12.addListener(this);
 
     addAndMakeVisible(dial13);
@@ -40,7 +40,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial13.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial13.setTextValueSuffix(" Coefficient");
     dial13.setRange(0,0.99,0.01);
-    dial13.setValue(0.5);
+    dial13.setValue(0.0);
     dial13.addListener(this);
 
     addAndMakeVisible(dial14);
@@ -48,7 +48,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial14.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial14.setTextValueSuffix(" Coefficient");
     dial14.setRange(0,0.99,0.01);
-    dial14.setValue(0.25);
+    dial14.setValue(0.0);
     dial14.addListener(this);
 
     //'G' feedback coefficient
@@ -57,7 +57,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial21.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial21.setTextValueSuffix(" Samples");
     dial21.setRange(0,100,1);
-    dial21.setValue(100);
+    dial21.setValue(0);
     dial21.addListener(this);
 
     addAndMakeVisible(dial22);
@@ -65,7 +65,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial22.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial22.setTextValueSuffix(" Samples");
     dial22.setRange(0,100,1);
-    dial22.setValue(75);
+    dial22.setValue(0);
     dial22.addListener(this);
 
     addAndMakeVisible(dial23);
@@ -73,7 +73,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial23.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial23.setTextValueSuffix(" Samples");
     dial23.setRange(0,100,1);
-    dial23.setValue(50);
+    dial23.setValue(0);
     dial23.addListener(this);
 
     addAndMakeVisible(dial24);
@@ -81,7 +81,7 @@ Vst_testAudioProcessorEditor::Vst_testAudioProcessorEditor (Vst_testAudioProcess
     dial24.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     dial24.setTextValueSuffix(" Samples");
     dial24.setRange(0,100,1);
-    dial24.setValue(25);
+    dial24.setValue(0);
     dial24.addListener(this);
 
     addAndMakeVisible(dial11label);
